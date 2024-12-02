@@ -1,3 +1,7 @@
+//  Advent of Code 2024 - Problem 1.1
+//
+//  https://godbolt.org/z/zW9rrb8Wq
+
 pub fn main() {
     let mut vec1 = DATA1;
     let mut vec2 = DATA2;
