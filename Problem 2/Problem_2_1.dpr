@@ -8,7 +8,7 @@ uses
   UProblem2_Data in 'UProblem2_Data.pas',
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
-{region 'Challenge 2.1'}
+{$region 'Challenge 2.1'}
 // Advent of Code 2024 - Problem 2 - Part 1
 // https://adventofcode.com/2024/day/1
 //
@@ -31,7 +31,7 @@ uses
 // - Any two adjacent levels differ by at least one and at most three.
 
 // ie monotone, and {diffs} ∈ [1,2,3]
-{endregion}
+{$endregion}
 
 function monotone_nonconstant_bounded(a:TArray<integer>):boolean;
 begin

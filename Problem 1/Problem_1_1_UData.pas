@@ -4,6 +4,7 @@ interface
 
 var
    data_1 : array of integer =
+{$region 'Data 1'}
              [  17113,
                 55260,
                 92726,
@@ -1004,8 +1005,10 @@ var
                 85075,
                 45072,
                 13192  ];
+{$endregion}
 
    data_2 : array of integer =
+{$region 'Data 2'}
              [  23229,
                 78804,
                 24891,
@@ -2006,6 +2009,7 @@ var
                 62377,
                 50682,
                 61043  ];
+{$endregion}
 
 implementation
 

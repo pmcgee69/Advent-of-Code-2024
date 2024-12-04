@@ -12,6 +12,9 @@
         <Projects Include="..\Problem 2\Problem_2_1.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\Problem 2\Problem_2_2.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="Problem_2_1:Make">
         <MSBuild Projects="..\Problem 2\Problem_2_1.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Problem_2_2">
+        <MSBuild Projects="..\Problem 2\Problem_2_2.dproj"/>
+    </Target>
+    <Target Name="Problem_2_2:Clean">
+        <MSBuild Projects="..\Problem 2\Problem_2_2.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Problem_2_2:Make">
+        <MSBuild Projects="..\Problem 2\Problem_2_2.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Problem_1_1;Problem_1_2;Problem_2_1"/>
+        <CallTarget Targets="Problem_1_1;Problem_1_2;Problem_2_1;Problem_2_2"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Problem_1_1:Clean;Problem_1_2:Clean;Problem_2_1:Clean"/>
+        <CallTarget Targets="Problem_1_1:Clean;Problem_1_2:Clean;Problem_2_1:Clean;Problem_2_2:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Problem_1_1:Make;Problem_1_2:Make;Problem_2_1:Make"/>
+        <CallTarget Targets="Problem_1_1:Make;Problem_1_2:Make;Problem_2_1:Make;Problem_2_2:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

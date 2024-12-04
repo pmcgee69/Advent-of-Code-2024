@@ -7,6 +7,7 @@ uses
   Problem_1_1_UData in 'Problem_1_1_UData.pas',
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
+{$region 'Challenge 1.2'}
 // Advent of Code 2024 - Problem 1 - Part 2
 // https://adventofcode.com/2024/day/1
 //
@@ -21,7 +22,7 @@ uses
 // from the left list appears in the right list.
 // Multiply each number in the left list by the number of times that number appears in the right list.
 // Calculate a total similarity score by adding up each result.
-
+{$endregion}
 
 begin
        var c    := 0;

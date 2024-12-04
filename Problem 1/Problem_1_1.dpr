@@ -7,6 +7,7 @@ uses
   Problem_1_1_UData in 'Problem_1_1_UData.pas',
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
+{$region 'Challenge 1.1'}
 // Advent of Code 2024 - Problem 1 - Part 1
 // https://adventofcode.com/2024/day/1
 //
@@ -30,6 +31,7 @@ uses
 //
 //   var total := 0;
 //   for var i := 0 to N-1 do inc(total, abs( data1[i]-data2[i] ) );
+{$endregion}
 
 begin
    var data1 := TList<integer>.Create(data_1);

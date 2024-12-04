@@ -9,6 +9,7 @@ implementation
 uses System.StrUtils, System.SysUtils;
 
 const test_data =
+{$region 'Test Data'}
 '''
 10
 10 11
@@ -16,12 +17,13 @@ const test_data =
 10 11 08
 10 11 14
 14 12 09
-45 47 48 51 54 56 54
+45 47 48 51
 76 79 81 84 84
 ''';
+{$endregion}
 
-{region 'levels data'}
 const data =
+{$region 'Levels Data'}
 '''
 45 47 48 51 54 56 54
 76 79 81 84 84
@@ -1024,7 +1026,7 @@ const data =
 65 68 70 71 73
 60 63 66 68 71 74 76 79
 ''';
-{endregion}
+{$endregion}
 
 var sl     : TStringList;
     cursor : integer;
@@ -1041,7 +1043,6 @@ begin
            inc(cursor);
     end;
 end;
-
 
 initialization
    sl := TStringList.Create;
