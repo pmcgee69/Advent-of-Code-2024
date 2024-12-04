@@ -5,6 +5,9 @@ uses System.Classes, Generics.Collections;
 
 function get_data : TArray<integer>;
 
+implementation
+uses System.StrUtils, System.SysUtils;
+
 const test_data =
 '''
 10
@@ -17,6 +20,7 @@ const test_data =
 76 79 81 84 84
 ''';
 
+{region 'levels data'}
 const data =
 '''
 45 47 48 51 54 56 54
@@ -1020,9 +1024,7 @@ const data =
 65 68 70 71 73
 60 63 66 68 71 74 76 79
 ''';
-
-implementation
-uses System.StrUtils, System.SysUtils;
+{endregion}
 
 var sl     : TStringList;
     cursor : integer;
@@ -1041,16 +1043,11 @@ begin
 end;
 
 
-
-function Read_data : TStringList;
-begin
+initialization
    sl := TStringList.Create;
    sl.Text := data;
    cursor  := 0;
-end;
 
-initialization
-   Read_data;
 finalization
    sl.free;
 end.

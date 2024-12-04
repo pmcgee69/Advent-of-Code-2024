@@ -8,6 +8,7 @@ uses
   UProblem2_Data in 'UProblem2_Data.pas',
   U_Utils_Functional in '..\U_Utils_Functional.pas';
 
+{region 'Challenge 2.1'}
 // Advent of Code 2024 - Problem 2 - Part 1
 // https://adventofcode.com/2024/day/1
 //
@@ -30,11 +31,12 @@ uses
 // - Any two adjacent levels differ by at least one and at most three.
 
 // ie monotone, and {diffs} ∈ [1,2,3]
+{endregion}
 
 function monotone_nonconstant_bounded(a:TArray<integer>):boolean;
 begin
 //   if length(a) < 2 then exit(true);                                            // This was unnecessary ...
-//   if length(a) < 3 then exit( (abs(a[0]-a[1]) > 0) and                         //    AND had errors.
+//   if length(a) < 3 then exit( (abs(a[0]-a[1]) > 0) and                         //    AND ... has errors.
 //                               (abs(a[0]-a[1]) < 4) );                          //
 
    var deltas := UFP.Leave<integer>( UFP.Adj_Delta(a), 1 );
@@ -51,16 +53,17 @@ begin
                                        else exit(true);
 end;
 
+
 begin
    var k  := 0;
-   var sl := get_data;
-       repeat
-         var b := monotone_nonconstant_bounded(sl);
+   var sl := get_data;                                   // Pull data set entries one at a time,
+       repeat                                            // a bit like a coroutine / python generator function
+         var b := monotone_nonconstant_bounded(sl);      // or a database
              if b then inc(k);
              sl := get_data;
        until (sl=nil);
 
        writeln;
-       writeln('Number of safe level sets : ',k);
+       writeln('Number of safe level sets : ',k);        // 230
        readln;
 end.
