@@ -1,8 +1,10 @@
 unit U_Utils_Functional;
 
 interface
-uses generics.Collections, system.SysUtils, system.classes;
+uses Generics.Collections, System.SysUtils, System.Classes, System.Math;
 
+const
+    minint = -maxint;
 type
     UFP = record
       type
@@ -12,31 +14,33 @@ type
                         end;
         triple<A,B,C> = record fst : A; snd : B; thd : C; end;
 
-      class function List_Map    <U>     ( L : TStringList; f : TFunc<string,U> ) : TList<U>;    overload;   static;
+      class function List_Map    <U>     ( L : TStringList; f : TFunc<string,U> )  : TList<U>;    overload;   static;
+      class function List_Map    <T,U>   ( L : TList<T>;    f : TFunc<T,U> )       : TList<U>;    overload;   static;
 
-      class function List_Map    <T,U>   ( L : TList<T>;    f : TFunc<T,U> )      : TList<U>;    overload;   static;
+      class function String_Map  <U>     ( const s: string; f : TFunc<string, integer, U> )
+                                                                                   : TList<U>;                static;
 
-      class function List_Reduce <T>     ( L : TList<T>;    f : TFunc<T,T,T> )    : T;                       static;
+      class function List_Reduce <T>     ( L : TList<T>;    f : TFunc<T,T,T>; t_:T): T;                       static;
 
-      class function List_Filter <T>     ( L : TList<T>;    f : TPredicate<T> )   : TList<T>;                static;
+      class function List_Filter <T>     ( L : TList<T>;    f : TPredicate<T> )    : TList<T>;                static;
 
-      class function Compose  <T,U,V>    ( f : TFunc<T,U>;  g : TFunc<U,V> )      : TFunc<T,V>;              static;
-
+      class function Compose  <T,U,V>    ( f : TFunc<T,U>;  g : TFunc<U,V> )       : TFunc<T,V>;              static;
       class function Compose3 <T,U,V,W>  ( f : TFunc<T,U>;
-                                           g : TFunc<U,V>;  h : TFunc<V,W> )      : TFunc<T,W>;              static;
+                                           g : TFunc<U,V>;  h : TFunc<V,W> )       : TFunc<T,W>;              static;
 
-      class function String_Map  <U>     ( const s : string;f : TFunc<string, integer, U> ) : TList<U>;      static;
-
-
-      class function Zip         <T,U>   ( L1 : TList<T>;   L2 : TList<U> )       : TList< tuple<T,U> >;     static;
-
+      class function Zip         <T,U>   ( L1 : TList<T>;   L2 : TList<U> )        : TList< tuple<T,U> >;     static;
       class function ZipTransform<T,U,V> ( L1 : TList<T>;
-                                           L2 : TList<U>;   f  : TFunc<T,U,V> )   : TList<V>;    overload;   static;
-
+                                           L2 : TList<U>;   f  : TFunc<T,U,V> )    : TList<V>;    overload;   static;
       class function ZipTransform<T,U,V> ( L1 : TArray<T>;
-                                           L2 : TArray<U>;  f  : TFunc<T,U,V> )   : TList<V>;    overload;   static;
+                                           L2 : TArray<U>;  f  : TFunc<T,U,V> )    : TList<V>;    overload;   static;
 
-      class function Order       <T>     ( L  : TList<T> )                        : TList<T>;                static;
+      class function Order       <T>     ( L  : TList<T> )                         : TList<T>;                static;
+
+      class function Adj_Diff            ( A  : TArray<integer> )                  : TList<integer>;          static;
+      class function Adj_Delta           ( A  : TArray<integer> )                  : TList<integer>;          static;
+
+      class function Take        <T>     ( L  : TList<T>;   n  : integer )         : TList<T>;                static;
+      class function Leave       <T>     ( L  : TList<T>;   n  : integer )         : TList<T>;                static;
 
     end;
 
@@ -57,6 +61,7 @@ type
 
   function Max      ( i,j : integer) : integer;
 
+  function Min      ( i,j : integer) : integer;
 
 
 implementation
@@ -96,18 +101,21 @@ implementation
    end;
 
 
-   class function UFP.List_Reduce<T> ( L : TList<T>; f : TFunc<T,T,T> ) : T;
+   class function UFP.List_Reduce<T> ( L : TList<T>; f : TFunc<T,T,T>; t_:T ) : T;
    begin
-         result := default(T);
+         case gettypekind(T) of
+            tkInteger :  result := t_ ;
+            else         result := default(T);
+         end;
 
-         for var t_ in L do result := f(t_, result);
+         for var x in L do result := f(x, result);
    end;
 
 
 
    class function UFP.List_Filter<T> ( L : TList<T>; f : TPredicate<T> ) : TList<T>;
    begin
-     var L2 {: TList<T>} := TList<T>.create;
+     var L2 := TList<T>.create;
 
          for var T_ in L do if f(T_) then L2.Add(T_);
 
@@ -150,6 +158,7 @@ implementation
          result := L3;
    end;
 
+
    class function UFP.ZipTransform <T,U,V> ( L1:TList<T>;
                                              L2:TList<U>; f:TFunc<T,U,V> ) : TList<V>;
    begin
@@ -164,6 +173,7 @@ implementation
          end;
          result := L3;
    end;
+
 
    class function UFP.ZipTransform <T,U,V> ( L1:TArray<T>;
                                              L2:TArray<U>; f:TFunc<T,U,V> ) : TList<V>;
@@ -180,11 +190,62 @@ implementation
          result := L3;
    end;
 
+
    class function UFP.Order <T> ( L:TList<T> ) : TList<T>;
    begin
          L.Sort;
          result := L;
    end;
+
+
+   class function UFP.Adj_Diff ( A:TArray<integer> ) : TList<integer>;
+   begin
+     var L    := TList<integer>.create;
+     var last := 0;
+
+         for var x in A do begin
+             L.Add( x-last );
+             last := x;
+         end;
+
+         result := L;
+   end;
+
+
+   class function UFP.Adj_Delta ( A:TArray<integer> ) : TList<integer>;
+   begin
+     var L    := TList<integer>.create;
+     var last := 0;
+
+         for var x in A do begin
+             L.Add( abs(x-last) );
+             last := x;
+         end;
+
+         result := L;
+   end;
+
+
+   class function UFP.Take <T> ( L:TList<T>; n:integer ) : TList<T>;
+   begin
+     var L_ := TList<T>.create;
+     var k  := min(n,L.Count);
+
+         for var i:=0 to k-1 do L_.Add(L[i]);
+
+         result := L_;
+   end;
+
+
+   class function UFP.Leave <T> ( L:TList<T>; n:integer ) : TList<T>;
+   begin
+     var L_ := TList<T>.create;
+
+         for var i:=n to L.Count-1 do L_.Add(L[i]);
+
+         result := L_;
+   end;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -202,6 +263,7 @@ implementation
 
    function Max         ( i,j : integer) : integer;   begin  if i<j then exit(j) else exit(i)  end;
 
+   function Min         ( i,j : integer) : integer;   begin  if i<j then exit(i) else exit(j)  end;
 
 
 end.

@@ -42,7 +42,7 @@ begin
 
        var data   := UFP.ZipTransform<integer, integer, integer>(data1, counts, mult);
                    { ZipTransform(data1,counts,mult) }
-       var total  :=  UFP.List_Reduce<integer>(data, sum);
+       var total  :=  UFP.List_Reduce<integer>(data, sum, 0);
                    { List_Reduce(data,sum) }
 
        writeln(total);           // 23963899
