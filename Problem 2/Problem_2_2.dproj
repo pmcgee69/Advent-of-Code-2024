@@ -158,8 +158,9 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="UProblem2_Data.pas"/>
         <DCCReference Include="..\U_Utils_Functional.pas"/>
+        <DCCReference Include="..\WC_ArrayHelper.pas"/>
+        <DCCReference Include="UProblem2_Data.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -73,7 +73,7 @@ implementation
 
    class function UFP.List_Map<T,U> ( L : TList<T>; f : TFunc<T,U> ) : TList<U>;
    begin
-     var L2 {: TList<U>} := TList<U>.create;
+     var L2 := TList<U>.create;
 
          for var T_ in L do L2.Add( f(T_) );
 
@@ -83,7 +83,7 @@ implementation
 
    class function UFP.List_Map<U> ( L : TStringList; f : TFunc<string,U> ) : TList<U>;
    begin
-     var L2 {: TList<U>} := TList<U>.create;
+     var L2 := TList<U>.create;
 
          for var T_ in L do L2.Add( f(T_) );
 
@@ -93,7 +93,7 @@ implementation
 
    class function UFP.String_Map<U> ( const s : string; f : TFunc<string, integer, U> ) : TList<U>;
    begin
-     var L2 {: TList<U>} := TList<U>.create;
+     var L2 := TList<U>.create;
 
          for var i := 1 to length(s) do L2.Add( f(s, i) );
 
@@ -146,15 +146,14 @@ implementation
    class function UFP.Zip <T,U> ( L1:TList<T>; L2:TList<U> ) : TList< tuple<T,U> >;
    begin
      var L3 := TList< tuple<T,U> >.create;
+     var i  := 0;
 
-         if L1.Count = L2.Count then begin
-            var i := 0;
+         if L1.Count = L2.Count then
             while i<L1.Count do begin
               var x := UFP.tuple<T,U>.Create( L1[i], L2[i] );
                   L3.Add( x );
                   inc(i);
             end;
-         end;
          result := L3;
    end;
 
@@ -163,14 +162,13 @@ implementation
                                              L2:TList<U>; f:TFunc<T,U,V> ) : TList<V>;
    begin
      var L3 := TList<V>.create;
+     var i  := 0;
 
-         if L1.Count = L2.Count then begin
-            var i := 0;
+         if L1.Count = L2.Count then
             while i<L1.Count do begin
                   L3.Add( f(L1[i],L2[i]) );
                   inc(i);
             end;
-         end;
          result := L3;
    end;
 
@@ -179,14 +177,13 @@ implementation
                                              L2:TArray<U>; f:TFunc<T,U,V> ) : TList<V>;
    begin
      var L3 := TList<V>.create;
+     var i  := 0;
 
-         if length(L1) = length(L2) then begin
-            var i := 0;
+         if length(L1) = length(L2) then
             while i<length(L1) do begin
                   L3.Add( f(L1[i],L2[i]) );
                   inc(i);
             end;
-         end;
          result := L3;
    end;
 
@@ -207,7 +204,6 @@ implementation
              L.Add( x-last );
              last := x;
          end;
-
          result := L;
    end;
 
@@ -221,7 +217,6 @@ implementation
              L.Add( abs(x-last) );
              last := x;
          end;
-
          result := L;
    end;
 

@@ -5,8 +5,9 @@ uses
   System.SysUtils,
   System.Math,
   System.Generics.Collections,
-  UProblem2_Data in 'UProblem2_Data.pas',
-  U_Utils_Functional in '..\U_Utils_Functional.pas';
+  U_Utils_Functional in '..\U_Utils_Functional.pas',
+  WC_ArrayHelper in '..\WC_ArrayHelper.pas',
+  UProblem2_Data in 'UProblem2_Data.pas';
 
 {$region 'Challenge 2.2'}
 // Advent of Code 2024 - Problem 2 - Part 1
@@ -48,13 +49,28 @@ begin
 end;
 
 
+function fuzz_test(a:TArray<integer>):boolean;
+begin
+   result := false;
+
+   for var i:= low(a) to high(a) do begin
+       var a2 : TArray<integer>;
+           setlength(a2,length(a));
+           TArray.Copy<integer>(a,a2,length(a));
+           TArray.Delete<integer>(a2,i);
+           result := monotone_nonconstant_bounded(a2);
+           if result then break;
+  end;
+end;
+
+
 begin
    var k  := 0;
    var sl := get_data;                                   // Pull data set entries one at a time,
        repeat                                            // a bit like a coroutine / python generator function
          var b := monotone_nonconstant_bounded(sl);      // or a database
 
-             //if not b then explore fuzzy options
+             if not b then b:=fuzz_test(sl);
 
              if b then inc(k);
              sl := get_data;

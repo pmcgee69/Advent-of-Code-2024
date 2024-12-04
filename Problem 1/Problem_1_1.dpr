@@ -5,7 +5,8 @@ uses
   System.SysUtils,
   System.Generics.Collections,
   Problem_1_1_UData in 'Problem_1_1_UData.pas',
-  U_Utils_Functional in '..\U_Utils_Functional.pas';
+  U_Utils_Functional in '..\U_Utils_Functional.pas',
+  WC_ArrayHelper in '..\WC_ArrayHelper.pas';
 
 {$region 'Challenge 1.1'}
 // Advent of Code 2024 - Problem 1 - Part 1
