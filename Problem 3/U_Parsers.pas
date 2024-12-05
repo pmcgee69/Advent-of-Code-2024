@@ -10,9 +10,9 @@ type
     str : TStringStream;
   end;
 
-  function Parse_Mul  (st:TStringstream):TParseResult;
-  function Parse_Digit({const [ref]} pr:TParseResult ):TParseResult;
-  function Parse_Comma(pr:TParseResult ):TParseResult;
+  function Parse_Mul     (st:TStringstream):TParseResult;
+  function Parse_Digit   (pr:TParseResult ):TParseResult;
+  function Parse_Comma   (pr:TParseResult ):TParseResult;
   function Parse_EndParen(pr:TParseResult ):TParseResult;
 
 implementation
@@ -20,24 +20,24 @@ implementation
 type
   TDigits = set of '0'..'9';
 var
-  Digits : TDigits = ['0'..'9'];
+  Digits  : TDigits = ['0'..'9'];
 
   function Parse_Mul(st:TStringstream):TParseResult;
   begin
-          result.ok  := false;
-          result.s   := '';
-          result.str := st;
-      var next       := st.Position+1;
+        result.ok  := false;
+        result.s   := '';
+        result.str := st;
+    var next       := st.Position+1;
 
-          if st.ReadString(4) <> 'mul(' then
-             st.Position := next
-          else begin
-             result.ok := true;
-             result.s  := '';
-          end;
+        if st.ReadString(4) <> 'mul(' then
+           st.Position := next
+        else begin
+           result.ok := true;
+           result.s  := '';
+        end;
   end;
 
-  function Parse_Digit({const [ref]} pr:TParseResult):TParseResult;
+  function Parse_Digit(pr:TParseResult):TParseResult;
   begin
         result.ok  := false;
         result.s   := pr.s;
@@ -81,8 +81,5 @@ var
         end;
         result.str.Position := same;
   end;
-
-
-
 
 end.

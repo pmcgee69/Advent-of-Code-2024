@@ -5,8 +5,7 @@ uses
   System.SysUtils,
   System.Classes,
   U_Parsers in 'U_Parsers.pas',
-  System.Generics.Collections,
-  U_Utils_Functional in '..\U_Utils_Functional.pas';
+  System.Generics.Collections;
 
 {$region 'Challenge 3.1'}
 // Advent of Code 2024 - Problem 3 - Part 1
@@ -27,7 +26,6 @@ begin
        stream.LoadFromFile('..\..\problem 3 raw data.txt');
 
    var mul, dig, com, par : TParseResult;
-   var i := 0;
 
        repeat
              mul := Parse_Mul(stream);
@@ -55,7 +53,6 @@ begin
                            var s    := par.s.Split([',']);
                                mult := s[0].ToInteger * s[1].ToInteger;
                                inc(total, mult);
-                               inc(i);
                         end;
                     end;
                 end;

@@ -28,18 +28,16 @@ begin
        var c    := 0;
        var dict := TDictionary<integer,integer>.Create;
 
-       for var d in data_2 do begin
+       for var d in data_2 do
            if dict.TryGetValue(d,c) then dict.AddOrSetValue(d,c+1)
                                     else dict.Add(d,1);
-       end;
 
        var counts := TList<integer>.Create;
        var data1  := TList<integer>.Create(data_1);
 
-       for var d in data1 do begin
+       for var d in data1 do
            if dict.TryGetValue(d,c) then counts.add(c)
-                                    else counts.add(0)
-       end;
+                                    else counts.add(0);
 
        var data   := UFP.ZipTransform<integer, integer, integer>(data1, counts, mult);
                    { ZipTransform(data1,counts,mult) }
