@@ -8,8 +8,11 @@ type
     ok  : boolean;
     s   : string;
     str : TStringStream;
+    du  : boolean;
   end;
 
+  function Parse_Do      (st:TStringstream):TParseResult;
+  function Parse_Dont    (st:TStringstream):TParseResult;
   function Parse_Mul     (st:TStringstream):TParseResult;
   function Parse_Digit   (pr:TParseResult ):TParseResult;
   function Parse_Comma   (pr:TParseResult ):TParseResult;
@@ -22,15 +25,45 @@ type
 var
   Digits  : TDigits = ['0'..'9'];
 
+    function Parse_Do(st:TStringstream):TParseResult;
+    begin
+        result.ok  := false;
+        result.s   := '';
+        result.str := st;
+    var same       := st.Position;
+
+        if st.ReadString(3) <> 'do(' then
+           st.Position := same
+        else begin
+           result.ok := true;
+           result.s  := '';
+        end;
+    end;
+
+    function Parse_Dont(st:TStringstream):TParseResult;
+    begin
+        result.ok  := false;
+        result.s   := '';
+        result.str := st;
+    var same       := st.Position;
+
+        if st.ReadString(6) <> 'don''t(' then
+           st.Position := same
+        else begin
+           result.ok := true;
+           result.s  := '';
+        end;
+    end;
+
   function Parse_Mul(st:TStringstream):TParseResult;
   begin
         result.ok  := false;
         result.s   := '';
         result.str := st;
-    var next       := st.Position+1;
+    var same       := st.Position;
 
         if st.ReadString(4) <> 'mul(' then
-           st.Position := next
+           st.Position := same
         else begin
            result.ok := true;
            result.s  := '';

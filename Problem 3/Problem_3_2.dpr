@@ -1,4 +1,4 @@
-{$APPTYPE CONSOLE}
+﻿{$APPTYPE CONSOLE}
 program Problem_3_2;
 
 uses
@@ -25,6 +25,7 @@ var
 begin
     result := false;
 
+    //bump(stream);
     dig := Parse_Digit(mul);                            // position doesn't advance
     if dig.ok then begin
 
@@ -40,7 +41,7 @@ begin
             repeat
                 dig := Parse_Digit(dig);                // position doesn't advance
                 par := Parse_EndParen(dig);             //
-                if dig.ok or par.ok then bump(stream);
+                if dig.ok then bump(stream);            //  error "or par.ok"
             until not dig.ok;
 
             if par.ok then begin                        // par = '000,111'
@@ -61,15 +62,21 @@ begin
        stream.LoadFromFile('..\..\problem 3 raw data.txt');
 
    var mul, du, dont : TParseResult;
-
+   var read := true;
        repeat
-             mul := Parse_Mul(stream);
-             if mul.ok then
-                    if not read_mul( mul, stream, total) then
-                       writeln(' x  ', stream.Position);
+             du   := Parse_Do  (stream);
+             mul  := Parse_Mul (stream);
+             dont := Parse_Dont(stream);
 
+             if mul.ok and read then
+                    read_mul( mul, stream, total);
+             if du.ok then
+                    read := true;
+             if dont.ok then
+                    read := false;
+             bump(stream);
        until stream.position = stream.size;
 
-       writeln(total);           // 173785482
+       writeln(total);           // ❎ 173785482      // ❎ 160823058    // ✅ 83158140
        readln;
 end.
