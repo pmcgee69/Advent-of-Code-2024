@@ -5,7 +5,8 @@ interface
 
 implementation
 
-{   Check for 1 word in 8 directions ... or 2 words in 4 directions.
+{   Check for 1 word  in 8 directions ...
+           or 2 words in 4 directions.
 
 // - - - - - - - - - - - - - - - -
 
