@@ -75,6 +75,6 @@ begin
        inc(xmas, count_words(4, N,   0, N-4, DL4));
 
        writeln;
-       writeln(xmas);
+       writeln(xmas);                  // 2547
        readln;
 end.
