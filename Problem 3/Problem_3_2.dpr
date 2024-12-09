@@ -25,7 +25,6 @@ var
 begin
     result := false;
 
-    //bump(stream);
     dig := Parse_Digit(mul);                            // position doesn't advance
     if dig.ok then begin
 
