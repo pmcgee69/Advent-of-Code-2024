@@ -8,11 +8,19 @@ const
 type
     UFP = record
       type
+        tuple <A>     = record fst : A;
+                               snd : A;
+                               constructor Create(_a,_b:A);         overload;
+                               constructor Create(arr:TArray<A>);   overload;
+                        end;
         tuple <A,B>   = record fst : A;
                                snd : B;
-                               constructor Create(_a:a; _b:B);
+                               constructor Create(_a:A; _b:B);
                         end;
         triple<A,B,C> = record fst : A; snd : B; thd : C; end;
+
+        TupleInt      = tuple<integer>;
+        TupleStr      = tuple<string>;
 
       class function List_Map    <U>     ( L : TStringList; f : TFunc<string,U> )  : TList<U>;    overload;   static;
       class function List_Map    <T,U>   ( L : TList<T>;    f : TFunc<T,U> )       : TList<U>;    overload;   static;
@@ -42,9 +50,8 @@ type
       class function Take        <T>     ( L  : TList<T>;   n  : integer )         : TList<T>;                static;
       class function Leave       <T>     ( L  : TList<T>;   n  : integer )         : TList<T>;                static;
 
+      class function Make_Tuple  <A,B>   ( t  : tuple<B>;   f  : TFunc<B,A>)       : tuple<A>;                static;
     end;
-
-
 
 
   function SafeStrToInt(s : string)  : integer;
@@ -63,13 +70,31 @@ type
 
   function Min      ( i,j : integer) : integer;
 
+  function To_Int     ( s : string ) : integer;
+
+  function To_Str    ( i : integer ) : string;
 
 implementation
+   constructor UFP.tuple<A>.Create(_a,_b:A);
+   begin
+        fst := _a;
+        snd := _b;
+   end;
+
+   constructor UFP.tuple<A>.Create(arr:TArray<A>);
+   begin
+        fst := arr[0];
+        snd := arr[1];
+   end;
+
+
    constructor UFP.tuple<A,B>.Create(_a: A; _b: B);
    begin
         fst := _a;
         snd := _b;
    end;
+
+
 
    class function UFP.List_Map<T,U> ( L : TList<T>; f : TFunc<T,U> ) : TList<U>;
    begin
@@ -242,6 +267,12 @@ implementation
    end;
 
 
+   class function UFP.Make_tuple<A,B>( t:tuple<B>; f:TFunc<B,A> ) : tuple<A>;
+   begin
+        result.fst := f(t.fst);
+        result.snd := f(t.snd);
+   end;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    function SafeStrToInt(   s : string ) : integer;   begin  if s='' then exit(0) else exit(s.ToInteger)  end;
@@ -260,6 +291,9 @@ implementation
 
    function Min         ( i,j : integer) : integer;   begin  if i<j then exit(i) else exit(j)  end;
 
+  function To_Int         ( s : string ) : integer;   begin exit( s.ToInteger ); end;
+
+  function To_Str         ( i : integer) : string;    begin exit( i.ToString );  end;
 
 end.
 
