@@ -1,7 +1,7 @@
 unit U_Utils_Functional;
 
 interface
-uses Generics.Collections, System.SysUtils, System.Classes, System.Math;
+uses Generics.Collections, Generics.Defaults, System.SysUtils, System.Classes, System.Math;
 
 const
     minint = -maxint;
@@ -21,6 +21,17 @@ type
 
         TupleInt      = tuple<integer>;
         TupleStr      = tuple<string>;
+
+        TupleInt_Comp_Fst = class(TComparer<TupleInt>)
+        public
+          function Compare(const L,R: TupleInt): integer; override;
+        end;
+
+        TupleInt_Comp_Snd = class(TComparer<TupleInt>)
+        public
+          function Compare(const L,R: TupleInt): integer; override;
+        end;
+
 
       class function List_Map    <U>     ( L : TStringList; f : TFunc<string,U> )  : TList<U>;    overload;   static;
       class function List_Map    <T,U>   ( L : TList<T>;    f : TFunc<T,U> )       : TList<U>;    overload;   static;
@@ -74,6 +85,8 @@ type
 
   function To_Str    ( i : integer ) : string;
 
+  function AddTuple  ( t1, t2 : UFP.TupleInt) : UFP.TupleInt;
+
 implementation
    constructor UFP.tuple<A>.Create(_a,_b:A);
    begin
@@ -94,6 +107,15 @@ implementation
         snd := _b;
    end;
 
+   function UFP.TupleInt_Comp_Fst.Compare(const L,R: TupleInt): Integer;
+   begin
+        result := L.fst - R.fst;
+   end;
+
+   function UFP.TupleInt_Comp_Snd.Compare(const L,R: TupleInt): Integer;
+   begin
+        result := L.snd - R.snd;
+   end;
 
 
    class function UFP.List_Map<T,U> ( L : TList<T>; f : TFunc<T,U> ) : TList<U>;
@@ -294,6 +316,12 @@ implementation
   function To_Int         ( s : string ) : integer;   begin exit( s.ToInteger ); end;
 
   function To_Str         ( i : integer) : string;    begin exit( i.ToString );  end;
+
+  function AddTuple  ( t1, t2 : UFP.TupleInt) : UFP.TupleInt;
+  begin
+           result.fst := t1.fst + t2.fst;
+           result.snd := t1.snd + t2.snd;
+  end;
 
 end.
 
