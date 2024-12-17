@@ -5,7 +5,7 @@ uses  System.Classes,System.Generics.Collections;
 var
    prints : TStringList;
    graph  : TDictionary<integer, TList<integer> >;
-
+   edges  : TStringList;
 
 
 implementation
@@ -1394,7 +1394,7 @@ initialization
 
        graph  := TDictionary<integer, TList<integer> >.Create;
        prints := TStringList.Create;
-   var edges  := TStringList.Create;
+       edges  := TStringList.Create;
 
        prints.Text := printruns;
        edges .Text := ordering;
