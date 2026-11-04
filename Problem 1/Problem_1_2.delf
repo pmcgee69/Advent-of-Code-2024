@@ -4,13 +4,15 @@ program Problem_1_2;
 { Advent of Code 2024, day 1 part 2 (the user's Problem_1_2.dpr), in Delf: the calls written
   as the comments in the original have them, without type arguments; delfc infers them.
   Predicted (Claude, 4 Nov, before the first build): <Integer, Integer, Integer> and
-  <Integer> inferred; prints 23963899, as the original's comment says. }
+  <Integer> inferred; prints 23963899, as the original's comment says.
+  Since 4 Nov through U_Utils_Functional.delf, whose routines are free functions: the calls
+  are the comments' exactly, ZipTransform(data1,counts,mult) and List_Reduce(data,sum). }
 
 uses
   System.SysUtils,
   System.Generics.Collections,
   Problem_1_1_UData in 'Problem_1_1_UData.pas',
-  U_Utils_Functional in '..\U_Utils_Functional.pas';
+  U_Utils_Functional in '..\U_Utils_Functional.delf';
 
 begin
   var c    := 0;
@@ -27,8 +29,8 @@ begin
     if dict.TryGetValue(d,c) then counts.add(c)
                              else counts.add(0);
 
-  var data  := UFP.ZipTransform(data1, counts, mult);
-  var total := UFP.List_Reduce(data, sum, 0);
+  var data  := ZipTransform(data1, counts, mult);
+  var total := List_Reduce(data, sum);
 
   writeln(total);           // 23963899
   dict.free;
